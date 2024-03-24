@@ -33,7 +33,7 @@ O histórico dos resultados é mostrado abaixo e pode ser obtido no Kaggle:
 - O **score público retornado pelo Kaggle foi: 0,69885**
 
 ## [Etapa 5: Utilizando o GridSearchCV e determinando os melhores parâmetros](https://github.com/lucasarauj0h/titanic-previsao/blob/main/5-attempt-titanic.ipynb)
-- Agora utilizamos o GridSearchCV para determinar os melhores parâmetros para os 3 modelos que utilizamos na etapa anterior
+- Agora utilizamos o GridSearchCV para determinar os melhores parâmetros para os 3 modelos que utilizamos na etapa anterior 
 - Nesse caso, o modelo escolhido foi aquele utilizando o RandomForest e o resultado melhorou consideravalmente em relação a etapa 4 e foi melhor que na etapa 3, se tornando a maior pontuação.
 - O **score público retornado pelo Kaggle foi: 0,81780**
 
