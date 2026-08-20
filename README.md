@@ -1,39 +1,84 @@
-# Titanic
-Repositório criado para a **[competição do Kaggle sobre o desastre do Titanic](https://www.kaggle.com/competitions/titanic/overview)**
+# Previsão de Sobrevivência no Titanic
 
-O histórico dos resultados é mostrado abaixo e pode ser obtido no Kaggle:
-<img src="https://github.com/lucasarauj0h/titanic-previsao/blob/main/resultados/resultados.png" />
+Evolução de cinco abordagens de machine learning para a [competição Titanic do Kaggle](https://www.kaggle.com/competitions/titanic/overview), partindo de um baseline simples até alcançar `0,81780` no leaderboard público.
 
-## [Etapa 1: Primeiro modelo](https://github.com/lucasarauj0h/titanic-previsao/blob/main/1-titanic.ipynb)
-- Nesse etapa fizemos apenas o básico para conseguir verificar qual seria o resultado sem fazer nenhum tratamento nem engenharia dos dados
-  - Foi visualizado um resumo da base utilizando o **[ydata-profiling](https://github.com/ydataai/ydata-profiling), biblioteca capaz de gerar com poucas linhas toda a descrição do nosso dataset**
-  - Também **eliminamos colunas com elevada cardinalidade**, **tratamos valores vazios utilizando a média e a moda das variáveis** e **eliminamos todas as colunas de texto**
-  - Criamos os modelos **utilizando 3 algoritmos: Árvore de Classificação, KNN e Regressão Logística** e **avaliamos esses modelos** utilizando a **acurácia** e a **matriz de confusão**
-- O **score público retornado pelo Kaggle foi: 0,66746**
+## Evolução dos resultados
 
-## [Etapa 2: Tratando as variáveis de texto](https://github.com/lucasarauj0h/titanic-previsao/blob/main/2-attempt-titanic.ipynb)
-- Na segunda etapa o foco principal foi tratar as variáveis de texto para conseguirmos utilizar todas as variáveis no nosso modelo
-  - Para fazer esse tratamento, utilizamos **lambda function e OneHotEncoder**
-- Utilizamos os mesmos modelos vistos anteriormente
-- O **score público retornado pelo Kaggle foi: 0,75837**
+| Etapa | Principal mudança | Score público Kaggle |
+| ---: | --- | ---: |
+| 1 | Limpeza inicial e comparação entre árvore de decisão, KNN e regressão logística | 0,66746 |
+| 2 | Tratamento das variáveis de texto com transformação e One-Hot Encoding | 0,75837 |
+| 3 | Engenharia de atributos, ajuste de escala e análise de correlação | 0,77033 |
+| 4 | Inclusão de Random Forest e MLPClassifier | 0,69885 |
+| 5 | Otimização de hiperparâmetros com GridSearchCV e seleção da Random Forest | **0,81780** |
 
-## [Etapa 3: Aprofundando no negócio e melhorando os tratamentos dos dados](https://github.com/lucasarauj0h/titanic-previsao/blob/main/3-attempt-titanic.ipynb)
-- Na terceira etapa o grande objetivo era **entender melhor os dados** para **fazer um melhor tratamento** e tentar melhorar o resultado obtido anteriormente.
-- Então fizemos:
-  - O **ajuste na escala dos dados para as colunas Age e Fare**
-  - Entendemos melhor as colunas **SibSp** (nº de irmãos/cônjuges a bordo do Titanic) e **Parch** (nº de pais/filhos a bordo do Titanic) e criamos **2 novas colunas: total de familiares a bordo do navio e se o passageiro estava sozinho ou não**
-  - Para finalizar, analisamos a **correlação de todas as variáveis** para selecionar aquelas que mais faziam sentido para o modelo
-- Utilizamos os mesmos modelos vistos anteriormente
-- O **score público retornado pelo Kaggle foi: 0,77033**
+O ganho entre a primeira e a melhor submissão foi de aproximadamente 15 pontos percentuais.
 
-## [Etapa 4: Selecionando outros algoritmos para fazer a previsão](https://github.com/lucasarauj0h/titanic-previsao/blob/main/4-attempt-titanic.ipynb)
-- Nessa etapa vamos manter todas as colunas (incluindo SibSp e Parch) e utilizar novos algoritmos para verificar o resultado do modelo
-- Os algoritmos que vamos utilizar nessa etapa são a **Regressão Logística** (vamos manter pois foi o com melhores resultados nas etapas anteriores), **RandomForest e MLPCLassifier (Redes Neurais)**
-- O MLPClassifier (um algoritmo de Redes Neurais) obteve a maior acurácia nos dados de validação entre todos os modelos vistos até agora, porém ao usar esse modelo nos dados de teste (que faremos a submissão) o resultado foi pior que na etapa 3, mostrando que **provavelmente tivemos um overfitting do nosso modelo**
-- O **score público retornado pelo Kaggle foi: 0,69885**
+```mermaid
+flowchart LR
+    accTitle: Evolução do pipeline do Titanic
+    accDescr: Cinco etapas incrementais mostram como tratamento de texto, engenharia de atributos e ajuste de hiperparâmetros alteraram o score público.
 
-## [Etapa 5: Utilizando o GridSearchCV e determinando os melhores parâmetros](https://github.com/lucasarauj0h/titanic-previsao/blob/main/5-attempt-titanic.ipynb)
-- Agora utilizamos o GridSearchCV para determinar os melhores parâmetros para os 3 modelos que utilizamos na etapa anterior 
-- Nesse caso, o modelo escolhido foi aquele utilizando o RandomForest e o resultado melhorou consideravalmente em relação a etapa 4 e foi melhor que na etapa 3, se tornando a maior pontuação.
-- O **score público retornado pelo Kaggle foi: 0,81780**
+    E1["1. Baseline<br/>0,66746"]
+    E2["2. Texto e encoding<br/>0,75837"]
+    E3["3. Engenharia de atributos<br/>0,77033"]
+    E4["4. Novos modelos<br/>0,69885"]
+    E5["5. GridSearchCV + Random Forest<br/>0,81780"]
+
+    E1 --> E2 --> E3 --> E4 --> E5
+```
+
+## Objetivo
+
+O projeto investiga como decisões de preparação dos dados, engenharia de atributos, seleção de algoritmos e ajuste de hiperparâmetros afetam um problema de classificação binária.
+
+Além do score final, os notebooks registram tentativas que pioraram o resultado. A quarta etapa, por exemplo, apresentou melhor desempenho local com MLPClassifier, mas uma queda no leaderboard, indicando possível overfitting.
+
+## Notebooks
+
+| Etapa | Notebook | Conteúdo |
+| ---: | --- | --- |
+| 1 | [`1-titanic.ipynb`](1-titanic.ipynb) | Inspeção, limpeza inicial e primeiros modelos |
+| 2 | [`2-attempt-titanic.ipynb`](2-attempt-titanic.ipynb) | Tratamento das variáveis categóricas |
+| 3 | [`3-attempt-titanic.ipynb`](3-attempt-titanic.ipynb) | Escala, atributos familiares e seleção de variáveis |
+| 4 | [`4-attempt-titanic.ipynb`](4-attempt-titanic.ipynb) | Random Forest, rede neural e análise de overfitting |
+| 5 | [`5-attempt-titanic.ipynb`](5-attempt-titanic.ipynb) | GridSearchCV e escolha do melhor modelo |
+
+O relatório exploratório gerado com ydata-profiling está em [`titanic_statistic_ydata.html`](titanic_statistic_ydata.html).
+
+## Metodologia aplicada
+
+- Tratamento de valores ausentes com medidas de tendência central.
+- Transformação de variáveis categóricas.
+- Engenharia de atributos a partir de relações familiares e condição de viagem.
+- Ajuste de escala para idade e tarifa.
+- Comparação entre regressão logística, KNN, árvore de decisão, Random Forest e MLPClassifier.
+- Otimização de hiperparâmetros com GridSearchCV.
+- Avaliação local por acurácia e matriz de confusão, acompanhada do score público do Kaggle.
+
+## Como reproduzir
+
+1. Baixe os arquivos da competição no Kaggle.
+2. Ajuste os caminhos de entrada indicados nos notebooks.
+3. Instale Jupyter e as bibliotecas utilizadas.
+4. Execute os notebooks na ordem numérica.
+
+Bibliotecas principais:
+
+```bash
+pip install jupyter pandas numpy matplotlib seaborn scikit-learn ydata-profiling
+jupyter notebook
+```
+
+## Interpretação dos resultados
+
+O score público do Kaggle é útil para acompanhar as submissões, mas não substitui uma estratégia de validação local. Comparações futuras devem registrar explicitamente a divisão entre treino e validação, a semente aleatória, a validação cruzada e o pipeline de pré-processamento.
+
+## Próximos passos
+
+- Consolidar preparação e modelo em um `Pipeline` do scikit-learn.
+- Fixar sementes e registrar métricas de validação cruzada.
+- Adicionar Precision, Recall, F1 e ROC AUC à comparação local.
+- Analisar erros do melhor modelo por grupos de passageiros.
+- Criar um arquivo de dependências para reprodução do ambiente.
 
